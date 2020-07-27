@@ -43,10 +43,10 @@ If you want to generate JSON Web Tokens in your application you need to add the 
 >**Note:** The `NetDevPack.Jwk` is a set of components who will generate Keys using industry security best standards (NIST Rotating keys, RSA Key Length, ECDsa P-256). It's supports [Elliptic Curves](https://blog.cloudflare.com/a-relatively-easy-to-understand-primer-on-elliptic-curve-cryptography/) and RSA as well.
 
 ## Examples
-Use the [sample application](https://github.com/NetDevPack/NetDevPack.Identity/tree/master/src/Samples/AspNetCore.Jwt.Sample) to understand how NetDevPack.Identity can be implemented and help you to decrease the complexity of your application and development time.
+Use the [sample application](https://github.com/NetDevPack/NetDevPack.JwtExtensions/tree/master/samples/ApiClient) to understand how NetDevPack.JwtExtensions can be implemented and help you to decrease the complexity of your application and development time.
 
 ## Compatibility
-The **NetDevPack.Identity** was developed to be implemented in **ASP.NET Core 3.1** `LTS` applications, in the next versions will be add the 2.1 `LTS` support.
+The **NetDevPack.JwtExtensions** was developed to be implemented in **ASP.NET Core 3.1** `LTS` applications, in the next versions will be add the 2.1 `LTS` support.
 
 ## About
-.NET DevPack.Identity was developed by [Eduardo Pires](http://eduardopires.net.br) under the [MIT license](LICENSE).
+.NET DevPack.JwtExtensions was developed by [Eduardo Pires](http://eduardopires.net.br) under the [MIT license](LICENSE).
