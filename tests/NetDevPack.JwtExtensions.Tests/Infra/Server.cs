@@ -27,7 +27,7 @@ namespace NetDevPack.JwtExtensions.Tests.Infra
                 .Configure(app =>
                 {
                     app.UseDeveloperExceptionPage();
-                    app.UseJwksManager();
+                    app.UseJwksDiscovery();
                     app.Map(new PathString("/auth"), x => x.UseMiddleware<AuthMiddleware>());
 
                 })

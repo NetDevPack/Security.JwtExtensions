@@ -29,7 +29,7 @@ namespace ApiClient
                     options.SaveToken = true;
 
                     // API Authenticator Endpoint
-                    options.SetJwksOptions(new JwkOptions("https://localhost:5005/jwks"));
+                    options.SetJwksOptions(new JwkOptions(Configuration["JwksUri"]));
                 });
         }
 

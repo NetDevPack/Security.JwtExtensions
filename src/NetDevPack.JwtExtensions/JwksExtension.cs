@@ -17,7 +17,7 @@ namespace NetDevPack.JwtExtensions
                 options.TokenValidationParameters.IssuerSigningKeyResolver = new JwkRetriever(jwkOptions).IssuerSigningKeyResolver;
 
             options.TokenValidationParameters.ValidateAudience = false;
-            options.TokenValidationParameters.ValidIssuer = jwkOptions.Issuer.OriginalString;
+            options.TokenValidationParameters.ValidIssuer = jwkOptions.Issuer;
         }
     }
 }
