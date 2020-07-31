@@ -12,7 +12,7 @@ namespace NetDevPack.Security.JwtExtensions.Tests.Infra
     public class Server : IDisposable
     {
         public const string ServerUrl = "https://localhost:5001";
-        public IWebHost TestServer;
+        public readonly IWebHost TestServer;
         public readonly HttpClient HttpClient = new HttpClient() { BaseAddress = new Uri(ServerUrl) };
 
         public Server()
