@@ -4,8 +4,8 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <Version>3.1.0</Version>
     <Authors>Bruno Brito</Authors>
-    <PackageIconUrl>https://jpproject.blob.core.windows.net/images/helldog.png</PackageIconUrl>
-    <PackageTags>jwt jwks rsa ecdsa hmac jwks_uri</PackageTags>
+    <PackageIconUrl>https://raw.githubusercontent.com/NetDevPack/NetDevPack/master/assets/IconNuget.png</PackageIconUrl>
+    <PackageTags>jwt jwks jwks_uri</PackageTags>
     <Title>Extension to load JWKS from custom uri</Title>
     <Description>Component for easy use of JWKS endpoint for Assymetric keys</Description>
     <NeutralLanguage>en</NeutralLanguage>
