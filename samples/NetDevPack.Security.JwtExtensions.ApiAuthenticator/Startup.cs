@@ -1,9 +1,9 @@
-using Jwks.Manager.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using NetDevPack.Security.JwtSigningCredentials.AspNetCore;
 using System.IO;
 
 namespace ApiAuthenticator
