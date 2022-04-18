@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
+﻿using System.Net.Http;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Protocols;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
@@ -18,7 +16,7 @@ namespace NetDevPack.Security.JwtExtensions
             };
 
             options.ConfigurationManager = new ConfigurationManager<OpenIdConnectConfiguration>(
-                jwkOptions.JwksUri.OriginalString,
+                jwkOptions.JwksUri,
                 new JwksRetriever(),
                 new HttpDocumentRetriever(httpClient) { RequireHttps = options.RequireHttpsMetadata });
 
