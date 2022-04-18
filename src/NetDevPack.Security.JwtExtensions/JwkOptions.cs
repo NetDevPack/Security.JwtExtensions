@@ -15,7 +15,7 @@ namespace NetDevPack.Security.JwtExtensions
         }
         public string Issuer { get; set; }
         public string JwksUri { get; set; }
-        public TimeSpan KeepFor { get; set; }
+        public TimeSpan KeepFor { get; set; } = TimeSpan.FromMinutes(15);
         public string Audience { get; set; }
     }
 }

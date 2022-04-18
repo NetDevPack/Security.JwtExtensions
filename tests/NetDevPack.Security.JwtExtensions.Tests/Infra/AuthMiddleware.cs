@@ -40,7 +40,7 @@ namespace NetDevPack.Security.JwtExtensions.Tests.Infra
                 }),
                 Expires = DateTime.UtcNow.AddHours(1),
                 Audience = "jwt-test",
-                Issuer = Server.ServerUrl,
+                Issuer = "https://mysite.com",
                 SigningCredentials = creds
             };
             var jwt = tokenHandler.CreateToken(tokenDescriptor);
