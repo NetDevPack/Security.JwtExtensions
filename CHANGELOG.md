@@ -1,3 +1,10 @@
+## [6.0.1](https://github.com/NetDevPack/Security.JwtExtensions/compare/v6.0.0...v6.0.1) (2022-04-18)
+
+
+### Bug Fixes
+
+* publish package fix ([61d00b3](https://github.com/NetDevPack/Security.JwtExtensions/commit/61d00b3d4424b9d5ef507bcb056836869a8a1c46))
+
 # [6.0.0](https://github.com/NetDevPack/Security.JwtExtensions/compare/v5.0.1...v6.0.0) (2022-04-18)
 
 
