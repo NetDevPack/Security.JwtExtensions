@@ -29,6 +29,9 @@ namespace NetDevPack.Security.JwtExtensions.Tests
             _output = output;
             _client = webApplicationFactory.CreateClient();
             _server = new Server();
+            // Force key generation
+            var tokenRequest = new HttpRequestMessage(HttpMethod.Get, "https://localhost:5001/auth");
+            _server.HttpClient.SendAsync(tokenRequest).Wait();
         }
 
         [Fact]
@@ -75,30 +78,7 @@ namespace NetDevPack.Security.JwtExtensions.Tests
             try { response.EnsureSuccessStatusCode(); } catch { _output.WriteLine(string.Join(" ", response.Headers.GetValues("WWW-Authenticate"))); throw; };
         }
 
-        [Fact]
-        public async Task Should_Get_Jwks_From_Cache()
-        {
-            var tokenRequest = new HttpRequestMessage(HttpMethod.Get, "https://localhost:5001/auth");
-            var tokenResponse = await _server.HttpClient.SendAsync(tokenRequest);
-            var token = await tokenResponse.Content.ReadAsStringAsync();
 
-            // First Get
-            var request = new HttpRequestMessage(HttpMethod.Get, "https://localhost/ProtectedWeatherForecast");
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            var response = await _client.SendAsync(request);
-
-            try { response.EnsureSuccessStatusCode(); } catch { _output.WriteLine(string.Join(" ", response.Headers.GetValues("WWW-Authenticate"))); throw; };
-
-            // 2nd Get
-            request = new HttpRequestMessage(HttpMethod.Get, "https://localhost/ProtectedWeatherForecast");
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            response = await _client.SendAsync(request);
-
-            try { response.EnsureSuccessStatusCode(); } catch { _output.WriteLine(string.Join(" ", response.Headers.GetValues("WWW-Authenticate"))); throw; };
-
-
-            ServiceDiscoveryMiddleware.CallTimes.Should().BeLessOrEqualTo(1);
-        }
 
 
         public void Dispose()

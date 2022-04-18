@@ -1,5 +1,4 @@
-﻿using Jwks.Manager.AspNetCore;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,7 +22,8 @@ namespace NetDevPack.Security.JwtExtensions.Tests.Infra
                 .UseKestrel()
                 .ConfigureServices(services =>
                 {
-                    services.AddJwksManager().PersistKeysToFileSystem(new DirectoryInfo(Directory.GetCurrentDirectory()));
+                    services.AddMemoryCache();
+                    services.AddJwksManager().PersistKeysInMemory();
                 })
                 .Configure(app =>
                 {

@@ -4,29 +4,16 @@ namespace NetDevPack.Security.JwtExtensions
 {
     public class JwkOptions
     {
-        public JwkOptions(string jwksUri)
+        public JwkOptions(string jwksUri, string issuer = null, TimeSpan? cacheTime = null, string audience = null)
         {
             JwksUri = new Uri(jwksUri);
-            Issuer = $"{JwksUri.Scheme}://{JwksUri.Authority}";
-            KeepFor = TimeSpan.FromMinutes(15);
+            Issuer = issuer ??  $"{JwksUri.Scheme}://{JwksUri.Authority}";
+            KeepFor = cacheTime ?? TimeSpan.FromMinutes(15);
+            Audience = audience;
         }
-
-        public JwkOptions(string jwksUri, TimeSpan cacheTime)
-        {
-            JwksUri = new Uri(jwksUri);
-            Issuer = $"{JwksUri.Scheme}://{JwksUri.Authority}";
-            KeepFor = cacheTime;
-        }
-
-        public JwkOptions(string jwksUri, string issuer, TimeSpan cacheTime)
-        {
-            JwksUri = new Uri(jwksUri);
-            Issuer = issuer;
-            KeepFor = cacheTime;
-        }
-        public string Issuer { get; private set; }
-        public Uri JwksUri { get; private set; }
-        public TimeSpan KeepFor { get; private set; }
-
+        public string Issuer { get; }
+        public Uri JwksUri { get; }
+        public TimeSpan KeepFor { get; }
+        public string Audience { get; }
     }
 }

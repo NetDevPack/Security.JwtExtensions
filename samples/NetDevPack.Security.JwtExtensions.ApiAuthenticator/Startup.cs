@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using NetDevPack.Security.JwtSigningCredentials.AspNetCore;
 using System.IO;
 
 namespace ApiAuthenticator
@@ -25,7 +24,7 @@ namespace ApiAuthenticator
         {
             services.AddControllers();
             services.AddHttpContextAccessor();
-            services.AddJwksManager().PersistKeysToFileSystem(new DirectoryInfo(_env.ContentRootPath));
+            services.AddJwksManager().PersistKeysInMemory();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

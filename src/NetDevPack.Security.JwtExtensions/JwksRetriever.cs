@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Protocols;
@@ -29,7 +30,8 @@ namespace NetDevPack.Security.JwtExtensions
             if (retriever == null)
                 throw LogHelper.LogArgumentNullException(nameof(retriever));
 
-            var doc = await retriever.GetDocumentAsync(address, cancel).ConfigureAwait(false);
+            IdentityModelEventSource.ShowPII = true;
+            var doc = await retriever.GetDocumentAsync(address, cancel);
             LogHelper.LogVerbose("IDX21811: Deserializing the string: '{0}' obtained from metadata endpoint into openIdConnectConfiguration object.", doc);
             var jwks = new JsonWebKeySet(doc);
             var openIdConnectConfiguration = new OpenIdConnectConfiguration()

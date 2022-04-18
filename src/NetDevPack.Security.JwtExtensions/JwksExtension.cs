@@ -21,8 +21,15 @@ namespace NetDevPack.Security.JwtExtensions
                 jwkOptions.JwksUri.OriginalString,
                 new JwksRetriever(),
                 new HttpDocumentRetriever(httpClient) { RequireHttps = options.RequireHttpsMetadata });
+
             options.TokenValidationParameters.ValidateAudience = false;
             options.TokenValidationParameters.ValidIssuer = jwkOptions.Issuer;
+
+            if (!string.IsNullOrEmpty(jwkOptions.Audience))
+            {
+                options.TokenValidationParameters.ValidateAudience = true;
+                options.TokenValidationParameters.ValidAudience = jwkOptions.Audience;
+            }
         }
     }
 }

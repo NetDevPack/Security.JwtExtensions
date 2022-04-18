@@ -25,7 +25,7 @@ namespace NetDevPack.Security.JwtExtensions.ApiTests
                 .AddJwtBearer(options =>
                {
                    options.IncludeErrorDetails = true; // <- great for debugging
-                   options.SetJwksOptions(new JwkOptions("https://localhost:5001/jwks"));
+                   options.SetJwksOptions(new JwkOptions("https://localhost:5001/jwks", audience: "jwt-test"));
                });
         }
 

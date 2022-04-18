@@ -6,11 +6,20 @@
 
 
   <ItemGroup>
-    <PackageReference Include="Bogus" Version="33.0.2" />
-    <PackageReference Include="NetDevPack.Security.JwtSigningCredentials.AspNetCore" Version="5.0.6" />
-    <PackageReference Include="NetDevPack.Security.JwtSigningCredentials.Store.FileSystem" Version="5.0.6" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.11.0" />
+    <PackageReference Include="Bogus" Version="34.0.2" />
+    <PackageReference Include="NetDevPack.Security.Jwt.AspNetCore" Version="6.0.5" />
+    <PackageReference Include="NetDevPack.Security.Jwt.Core" Version="6.0.5" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.17.0" />
   </ItemGroup>
 
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.24" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.16" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.4" />
+  </ItemGroup>
 
 </Project>

@@ -1,22 +1,23 @@
-﻿using Bogus;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using NetDevPack.Security.JwtSigningCredentials.Interfaces;
-using System;
+﻿using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using ApiAuthenticator.Services;
+using Bogus;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using NetDevPack.Security.Jwt.Core.Interfaces;
 
-namespace ApiAuthenticator.Services
+namespace NetDevPack.Security.JwtExtensions.ApiAuthenticator.Services
 {
     public class AuthenticationService : IAuthenticationService
     {
         private readonly IConfiguration _configuration;
-        private readonly IJsonWebKeySetService _jsonWebKeySetService;
+        private readonly IJwtService _jsonWebKeySetService;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public AuthenticationService(IConfiguration configuration, IJsonWebKeySetService jsonWebKeySetService, IHttpContextAccessor httpContextAccessor)
+        public AuthenticationService(IConfiguration configuration, IJwtService jsonWebKeySetService, IHttpContextAccessor httpContextAccessor)
         {
             _configuration = configuration;
             _jsonWebKeySetService = jsonWebKeySetService;
@@ -28,7 +29,7 @@ namespace ApiAuthenticator.Services
 
             var faker = new Faker();
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = _jsonWebKeySetService.GetCurrent();
+            var key = await _jsonWebKeySetService.GetCurrentSigningCredentials();
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {

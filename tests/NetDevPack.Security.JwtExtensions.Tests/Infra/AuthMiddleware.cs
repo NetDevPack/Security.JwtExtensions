@@ -1,13 +1,11 @@
 ﻿using Bogus;
-using Jwks.Manager;
-using Jwks.Manager.Interfaces;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using NetDevPack.Security.Jwt.Core.Interfaces;
 
 namespace NetDevPack.Security.JwtExtensions.Tests.Infra
 {
@@ -20,7 +18,7 @@ namespace NetDevPack.Security.JwtExtensions.Tests.Infra
             _next = next;
         }
 
-        public async Task Invoke(HttpContext httpContext, IJsonWebKeySetService keyService, IOptions<JwksOptions> options)
+        public async Task Invoke(HttpContext httpContext, IJwtService keyService)
         {
             if (!string.IsNullOrEmpty(_jws))
             {
@@ -30,7 +28,7 @@ namespace NetDevPack.Security.JwtExtensions.Tests.Infra
 
             var faker = new Faker();
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = keyService.GetCurrent();
+            var creds = await keyService.GetCurrentSigningCredentials();
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]
@@ -43,7 +41,7 @@ namespace NetDevPack.Security.JwtExtensions.Tests.Infra
                 Expires = DateTime.UtcNow.AddHours(1),
                 Audience = "jwt-test",
                 Issuer = Server.ServerUrl,
-                SigningCredentials = key
+                SigningCredentials = creds
             };
             var jwt = tokenHandler.CreateToken(tokenDescriptor);
             _jws = tokenHandler.WriteToken(jwt);
