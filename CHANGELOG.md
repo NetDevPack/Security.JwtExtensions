@@ -1,3 +1,15 @@
+# [7.0.0](https://github.com/NetDevPack/Security.JwtExtensions/compare/v6.0.2...v7.0.0) (2022-11-17)
+
+
+### Features
+
+* net 7 ([cc5fe34](https://github.com/NetDevPack/Security.JwtExtensions/commit/cc5fe347933f03ff934787ae3821263b48050cef))
+
+
+### BREAKING CHANGES
+
+* net 7 sup and dropped net 5
+
 ## [6.0.2](https://github.com/NetDevPack/Security.JwtExtensions/compare/v6.0.1...v6.0.2) (2022-04-18)
 
 
