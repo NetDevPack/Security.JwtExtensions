@@ -1,3 +1,10 @@
+# [7.1.0](https://github.com/NetDevPack/Security.JwtExtensions/compare/v7.0.0...v7.1.0) (2024-02-08)
+
+
+### Features
+
+* .NET 8 ([2fa28da](https://github.com/NetDevPack/Security.JwtExtensions/commit/2fa28dad49d0bb5aed8cc9cc246a43c01c06f655))
+
 # [7.0.0](https://github.com/NetDevPack/Security.JwtExtensions/compare/v6.0.2...v7.0.0) (2022-11-17)
 
 
