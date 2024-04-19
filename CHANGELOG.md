@@ -1,3 +1,16 @@
+# [8.0.0](https://github.com/NetDevPack/Security.JwtExtensions/compare/v7.1.0...v8.0.0) (2024-04-19)
+
+
+### Bug Fixes
+
+* deps ([2738f10](https://github.com/NetDevPack/Security.JwtExtensions/commit/2738f10d2b87b6df634fa92bcdd19c698a3eb8e2))
+* deps upgrade ([76afaa9](https://github.com/NetDevPack/Security.JwtExtensions/commit/76afaa96c27012e29ffbd700188e90e63572eb6f))
+
+
+### BREAKING CHANGES
+
+* .NET 8
+
 # [7.1.0](https://github.com/NetDevPack/Security.JwtExtensions/compare/v7.0.0...v7.1.0) (2024-02-08)
 
 
