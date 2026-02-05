@@ -1,3 +1,15 @@
+# [9.0.0](https://github.com/NetDevPack/Security.JwtExtensions/compare/v8.0.0...v9.0.0) (2026-02-05)
+
+
+### Features
+
+* **runtime:** upgrade project to latest .NET version ([df2efd4](https://github.com/NetDevPack/Security.JwtExtensions/commit/df2efd4982a38cd1233a6a7b9b64a8dbe8120ab7))
+
+
+### BREAKING CHANGES
+
+* **runtime:** dropped support for non-LTS .NET versions
+
 # [8.0.0](https://github.com/NetDevPack/Security.JwtExtensions/compare/v7.1.0...v8.0.0) (2024-04-19)
 
 
