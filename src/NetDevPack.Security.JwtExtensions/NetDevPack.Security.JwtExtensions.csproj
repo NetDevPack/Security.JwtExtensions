@@ -1,18 +1,46 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFrameworks>netstandard2.1;net8.0;net9.0;net10.0</TargetFrameworks>
-    <Version>3.1.0</Version>
-    <Authors>Bruno Brito</Authors>
-    <PackageIconUrl>https://raw.githubusercontent.com/NetDevPack/NetDevPack/master/assets/IconNuget.png</PackageIconUrl>
-    <PackageTags>jwt jwks jwks_uri</PackageTags>
-    <Title>Extension to load JWKS from custom uri</Title>
-    <Description>Component for easy use of JWKS endpoint for Assymetric keys</Description>
-    <NeutralLanguage>en</NeutralLanguage>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <RepositoryUrl>https://github.com/brunohbrito/Jwks.Manager</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-  </PropertyGroup>
+<PropertyGroup>
+  <TargetFrameworks>netstandard2.1;net8.0;net9.0;net10.0</TargetFrameworks>
+  <ImplicitUsings>enable</ImplicitUsings>
+  <Nullable>enable</Nullable>
+  <LangVersion>latest</LangVersion>
+  <PackageId>NetDevPack.Security.JwtExtensions</PackageId>
+  <Version>3.1.0</Version>
+  <Authors>brunobritodev</Authors>
+  <Company>NetDevPack</Company>
+  <Title>JWKS URI Loader for JWT Validation</Title>
+  <Description>
+    A .NET library that simplifies consuming JSON Web Key Sets (JWKS) from external URIs
+    to validate JWT tokens using asymmetric keys. Reduces the complexity of handling remote key rotation.
+  </Description>
+  <PackageTags>jwt;jwks;jwk;jwks-uri;token-validation;security;cryptography;key-rotation;dotnet</PackageTags>
+  <NeutralLanguage>en</NeutralLanguage>
+  <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  <RepositoryUrl>https://github.com/NetDevPack/Security.JwtExtensions</RepositoryUrl>
+  <RepositoryType>git</RepositoryType>
+  <RepositoryBranch>main</RepositoryBranch>
+  <PackageProjectUrl>https://github.com/NetDevPack/Security.JwtExtensions</PackageProjectUrl>
+  <PackageIcon>icon.png</PackageIcon>
+  <PackageReadmeFile>README.md</PackageReadmeFile>
+  <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  <IncludeSymbols>true</IncludeSymbols>
+  <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+
+  <!-- Release notes -->
+  <PackageReleaseNotes>
+    v10.0.0:
+    - Simplifies loading JWKS from remote URIs
+    - Supports automatic key refresh scenarios
+    - Designed for JWT validation with asymmetric keys
+  </PackageReleaseNotes>
+</PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\icon.png" Pack="true" PackagePath="\" />
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.15.0" />
