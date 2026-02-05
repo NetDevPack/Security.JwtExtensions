@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 
 namespace NetDevPack.Security.JwtExtensions.ApiTests
 {
@@ -24,8 +25,10 @@ namespace NetDevPack.Security.JwtExtensions.ApiTests
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                {
+                   options.RequireHttpsMetadata = false;
+                   var jwksUrl = Environment.GetEnvironmentVariable("JWKS_URL") ?? "https://localhost:5001/jwks";
                    options.IncludeErrorDetails = true; // <- great for debugging
-                   options.SetJwksOptions(new JwkOptions("https://localhost:5001/jwks", audience: "jwt-test", issuer: "https://mysite.com"));
+                   options.SetJwksOptions(new JwkOptions(jwksUrl, audience: "jwt-test", issuer: "https://mysite.com"));
                });
         }
 

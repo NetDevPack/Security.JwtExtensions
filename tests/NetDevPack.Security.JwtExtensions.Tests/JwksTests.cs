@@ -27,17 +27,21 @@ namespace NetDevPack.Security.JwtExtensions.Tests
         {
             _webApplicationFactory = webApplicationFactory;
             _output = output;
-            _client = webApplicationFactory.CreateClient();
             _server = new Server();
+            Environment.SetEnvironmentVariable("JWKS_URL", $"{_server.ServerUrl}/jwks");
+            _client = webApplicationFactory.CreateClient(new WebApplicationFactoryClientOptions
+            {
+                BaseAddress = new Uri("https://localhost")
+            });
             // Force key generation
-            var tokenRequest = new HttpRequestMessage(HttpMethod.Get, "https://localhost:5001/auth");
+            var tokenRequest = new HttpRequestMessage(HttpMethod.Get, new Uri("/auth", UriKind.Relative));
             _server.HttpClient.SendAsync(tokenRequest).Wait();
         }
 
         [Fact]
         public async Task Should_200()
         {
-            var request = new HttpRequestMessage(HttpMethod.Get, "https://localhost/WeatherForecast");
+            var request = new HttpRequestMessage(HttpMethod.Get, "/WeatherForecast");
 
             var response = await _client.SendAsync(request);
 
@@ -47,7 +51,7 @@ namespace NetDevPack.Security.JwtExtensions.Tests
         [Fact]
         public async Task Should_401()
         {
-            var request = new HttpRequestMessage(HttpMethod.Get, "https://localhost/ProtectedWeatherForecast");
+            var request = new HttpRequestMessage(HttpMethod.Get, "/ProtectedWeatherForecast");
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", "generic token");
             var response = await _client.SendAsync(request);
 
@@ -57,7 +61,7 @@ namespace NetDevPack.Security.JwtExtensions.Tests
         [Fact]
         public async Task Should_Not_Validate_Bearer_Token_With_Invalid_Signature()
         {
-            var request = new HttpRequestMessage(HttpMethod.Get, "https://localhost/ProtectedWeatherForecast");
+            var request = new HttpRequestMessage(HttpMethod.Get, "/ProtectedWeatherForecast");
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", InvalidSignature);
             var response = await _client.SendAsync(request);
 
@@ -67,11 +71,11 @@ namespace NetDevPack.Security.JwtExtensions.Tests
         [Fact]
         public async Task Should_Validate_Bearer_Token()
         {
-            var tokenRequest = new HttpRequestMessage(HttpMethod.Get, "https://localhost:5001/auth");
+            var tokenRequest = new HttpRequestMessage(HttpMethod.Get, new Uri("/auth", UriKind.Relative));
             var tokenResponse = await _server.HttpClient.SendAsync(tokenRequest);
             var token = await tokenResponse.Content.ReadAsStringAsync();
 
-            var request = new HttpRequestMessage(HttpMethod.Get, "https://localhost/ProtectedWeatherForecast");
+            var request = new HttpRequestMessage(HttpMethod.Get, "/ProtectedWeatherForecast");
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var response = await _client.SendAsync(request);
 
