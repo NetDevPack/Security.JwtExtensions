@@ -1,3 +1,10 @@
+## [9.0.1](https://github.com/NetDevPack/Security.JwtExtensions/compare/v9.0.0...v9.0.1) (2026-02-05)
+
+
+### Bug Fixes
+
+* drop support for non LTS versions ([00c9695](https://github.com/NetDevPack/Security.JwtExtensions/commit/00c9695bc8f472e8400bc763e3d7d62c33cfe74e))
+
 # [9.0.0](https://github.com/NetDevPack/Security.JwtExtensions/compare/v8.0.0...v9.0.0) (2026-02-05)
 
 
