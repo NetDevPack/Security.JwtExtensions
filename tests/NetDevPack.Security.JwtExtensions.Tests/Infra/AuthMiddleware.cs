@@ -12,7 +12,7 @@ namespace NetDevPack.Security.JwtExtensions.Tests.Infra
     public class AuthMiddleware
     {
         private readonly RequestDelegate _next;
-        private static string _jws;
+        private string _jws;
         public AuthMiddleware(RequestDelegate next)
         {
             _next = next;
