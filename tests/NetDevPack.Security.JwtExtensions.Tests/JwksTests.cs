@@ -1,4 +1,4 @@
-using FluentAssertions;
+using AwesomeAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
 using NetDevPack.Security.JwtExtensions.Tests.Infra;
 using System;
@@ -10,7 +10,6 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using NetDevPack.Security.JwtExtensions.ApiTests;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace NetDevPack.Security.JwtExtensions.Tests
 {
@@ -43,7 +42,7 @@ namespace NetDevPack.Security.JwtExtensions.Tests
         {
             var request = new HttpRequestMessage(HttpMethod.Get, "/WeatherForecast");
 
-            var response = await _client.SendAsync(request);
+            var response = await _client.SendAsync(request, TestContext.Current.CancellationToken);
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
         }
@@ -53,7 +52,7 @@ namespace NetDevPack.Security.JwtExtensions.Tests
         {
             var request = new HttpRequestMessage(HttpMethod.Get, "/ProtectedWeatherForecast");
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", "generic token");
-            var response = await _client.SendAsync(request);
+            var response = await _client.SendAsync(request, TestContext.Current.CancellationToken);
 
             response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
         }
@@ -63,7 +62,7 @@ namespace NetDevPack.Security.JwtExtensions.Tests
         {
             var request = new HttpRequestMessage(HttpMethod.Get, "/ProtectedWeatherForecast");
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", InvalidSignature);
-            var response = await _client.SendAsync(request);
+            var response = await _client.SendAsync(request, TestContext.Current.CancellationToken);
 
             response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
         }
@@ -72,12 +71,12 @@ namespace NetDevPack.Security.JwtExtensions.Tests
         public async Task Should_Validate_Bearer_Token()
         {
             var tokenRequest = new HttpRequestMessage(HttpMethod.Get, new Uri("/auth", UriKind.Relative));
-            var tokenResponse = await _server.HttpClient.SendAsync(tokenRequest);
-            var token = await tokenResponse.Content.ReadAsStringAsync();
+            var tokenResponse = await _server.HttpClient.SendAsync(tokenRequest, TestContext.Current.CancellationToken);
+            var token = await tokenResponse.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
 
             var request = new HttpRequestMessage(HttpMethod.Get, "/ProtectedWeatherForecast");
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            var response = await _client.SendAsync(request);
+            var response = await _client.SendAsync(request, TestContext.Current.CancellationToken);
 
             try { response.EnsureSuccessStatusCode(); } catch { _output.WriteLine(string.Join(" ", response.Headers.GetValues("WWW-Authenticate"))); throw; };
         }
