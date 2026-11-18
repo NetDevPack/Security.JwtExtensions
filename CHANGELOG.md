@@ -1,3 +1,33 @@
+## [10.0.0](https://github.com/NetDevPack/Security.JwtExtensions/compare/v9.0.1...v10.0.0) (2026-11-18)
+
+### ⚠ BREAKING CHANGES
+
+* the package now targets .NET 10 only. Stay on 9.x for
+.NET Standard 2.1, .NET 8 or .NET 9. The public API did not change.
+
+* ci: use conventionalcommits release preset
+
+* test: share the JWKS server across the test class
+
+Each test created its own JWKS server (new keys), while the API under test is a
+class fixture that reads JWKS_URL once and AuthMiddleware cached the first token
+in a static field. Results depended on test order, which changed with xunit.v3
+and fails on Linux CI.
+
+* ci: publish to NuGet with trusted publishing
+
+nuget.org API keys expire and the org key already did, which made the
+last releases fail with 403. Publish with NuGet/login (OIDC) instead:
+the job gets a short-lived key from the trusted publishing policy for
+this repository and workflow file.
+
+Also adds a workflow_dispatch input to publish an existing release tag
+again, since re-running the job skips the push once the release exists.
+
+### Features
+
+* target .NET 10 and update dependencies ([#8](https://github.com/NetDevPack/Security.JwtExtensions/issues/8)) ([6779aee](https://github.com/NetDevPack/Security.JwtExtensions/commit/6779aee7259a36716e18f7b3ef1a450f05a9c1f0))
+
 ## [9.0.1](https://github.com/NetDevPack/Security.JwtExtensions/compare/v9.0.0...v9.0.1) (2026-02-05)
 
 
