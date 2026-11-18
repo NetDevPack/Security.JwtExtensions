@@ -24,6 +24,15 @@ If you liked the project or if NetDevPack helped you, please give a star ;)
 dotnet add package NetDevPack.Security.JwtExtensions
 ```
 
+### Compatibility
+
+| Version | Target frameworks |
+| ------- | ----------------- |
+| 10.x    | .NET 10 (LTS) |
+| 9.x     | .NET Standard 2.1, .NET 8, .NET 9, .NET 10 |
+
+> **Breaking change in v10:** .NET Standard 2.1, .NET 8 and .NET 9 are no longer targeted. .NET 8 and .NET 9 are out of support since 2026-11-10, and the `netstandard2.1` target pulled ASP.NET Core 2.1 packages with known vulnerabilities. If you need them, stay on 9.x. The public API did not change.
+
 Then use Extension at configuration in `ConfigureServices` method of your `Startup.cs`:
 
 ```csharp

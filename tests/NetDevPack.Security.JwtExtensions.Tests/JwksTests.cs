@@ -1,4 +1,4 @@
-using FluentAssertions;
+using AwesomeAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
 using NetDevPack.Security.JwtExtensions.Tests.Infra;
 using System;
@@ -10,11 +10,12 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using NetDevPack.Security.JwtExtensions.ApiTests;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace NetDevPack.Security.JwtExtensions.Tests
 {
-    public class JwksTests : IClassFixture<WebApplicationFactory<Startup>>, IDisposable
+    // One JWKS server per test class: the API under test is a class fixture and reads JWKS_URL once,
+    // so every test must use tokens signed by the same server.
+    public class JwksTests : IClassFixture<WebApplicationFactory<Startup>>, IClassFixture<Server>
     {
         private readonly WebApplicationFactory<Startup> _webApplicationFactory;
         private readonly ITestOutputHelper _output;
@@ -23,11 +24,11 @@ namespace NetDevPack.Security.JwtExtensions.Tests
 
         private const string InvalidSignature = "eyJhbGciOiJFUzI1NiIsImtpZCI6Im1qeEQyQUphcXE4cW8zMWRiMjFyTGciLCJ0eXAiOiJhdCtqd3QifQ.eyJuYmYiOjE1OTU3MzQ0MzksImV4cCI6MTU5NTczODAzOSwiaXNzIjoiaHR0cHM6Ly9zc28uanBwcm9qZWN0Lm5ldCIsImF1ZCI6ImpwX2FwaSIsImNsaWVudF9pZCI6IklTNC1BZG1pbiIsInN1YiI6Ijc0MkYyMzk2LTg1N0MtNEI0Qy01NUExLTA4RDYzMTczMUIzRCIsImF1dGhfdGltZSI6MTU5NTczNDQzMiwiaWRwIjoiR29vZ2xlIiwiaXM0LXJpZ2h0cyI6Im1hbmFnZXIiLCJyb2xlIjoiQWRtaW5pc3RyYXRvciIsImVtYWlsIjoiYmhkZWJyaXRvQGdtYWlsLmNvbSIsInVzZXJuYW1lIjoiYnJ1bm8iLCJzY29wZSI6WyJvcGVuaWQiLCJwcm9maWxlIiwiZW1haWwiLCJyb2xlIiwianBfYXBpLmlzNCJdLCJhbXIiOlsiZXh0ZXJuYWwiXX0.i4_sfpzcS5oVVdgQqyH2qJfp02Jl-dAm3KuDr8G1BEz2flw6d3yPB8C82qhuM9PDNO7UBcXm8LJdMfI--SUK0A";
 
-        public JwksTests(WebApplicationFactory<Startup> webApplicationFactory, ITestOutputHelper output)
+        public JwksTests(WebApplicationFactory<Startup> webApplicationFactory, Server server, ITestOutputHelper output)
         {
             _webApplicationFactory = webApplicationFactory;
             _output = output;
-            _server = new Server();
+            _server = server;
             Environment.SetEnvironmentVariable("JWKS_URL", $"{_server.ServerUrl}/jwks");
             _client = webApplicationFactory.CreateClient(new WebApplicationFactoryClientOptions
             {
@@ -43,7 +44,7 @@ namespace NetDevPack.Security.JwtExtensions.Tests
         {
             var request = new HttpRequestMessage(HttpMethod.Get, "/WeatherForecast");
 
-            var response = await _client.SendAsync(request);
+            var response = await _client.SendAsync(request, TestContext.Current.CancellationToken);
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
         }
@@ -53,7 +54,7 @@ namespace NetDevPack.Security.JwtExtensions.Tests
         {
             var request = new HttpRequestMessage(HttpMethod.Get, "/ProtectedWeatherForecast");
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", "generic token");
-            var response = await _client.SendAsync(request);
+            var response = await _client.SendAsync(request, TestContext.Current.CancellationToken);
 
             response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
         }
@@ -63,7 +64,7 @@ namespace NetDevPack.Security.JwtExtensions.Tests
         {
             var request = new HttpRequestMessage(HttpMethod.Get, "/ProtectedWeatherForecast");
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", InvalidSignature);
-            var response = await _client.SendAsync(request);
+            var response = await _client.SendAsync(request, TestContext.Current.CancellationToken);
 
             response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
         }
@@ -72,22 +73,15 @@ namespace NetDevPack.Security.JwtExtensions.Tests
         public async Task Should_Validate_Bearer_Token()
         {
             var tokenRequest = new HttpRequestMessage(HttpMethod.Get, new Uri("/auth", UriKind.Relative));
-            var tokenResponse = await _server.HttpClient.SendAsync(tokenRequest);
-            var token = await tokenResponse.Content.ReadAsStringAsync();
+            var tokenResponse = await _server.HttpClient.SendAsync(tokenRequest, TestContext.Current.CancellationToken);
+            var token = await tokenResponse.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
 
             var request = new HttpRequestMessage(HttpMethod.Get, "/ProtectedWeatherForecast");
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            var response = await _client.SendAsync(request);
+            var response = await _client.SendAsync(request, TestContext.Current.CancellationToken);
 
             try { response.EnsureSuccessStatusCode(); } catch { _output.WriteLine(string.Join(" ", response.Headers.GetValues("WWW-Authenticate"))); throw; };
         }
 
-
-
-
-        public void Dispose()
-        {
-            _server.Dispose();
-        }
     }
 }
